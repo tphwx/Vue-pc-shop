@@ -25,10 +25,10 @@
     </div>
     <div class="header-bottom">
       <h1>
-        <router-link to="/home"><img src="./images/logo.png" alt=""></router-link>
+        <router-link to="/"><img src="./images/logo.png" alt=""></router-link>
       </h1>
       <div class="header-search">
-        <input type="text"><router-link to='/search'><button>搜索</button> </router-link>
+        <input type="text" v-model="searchText"><button @click="search">搜索</button>
       </div>
     </div>
   </div>
@@ -37,6 +37,29 @@
 <script>
 export default {
   name: "Header",
+  data(){
+    return {
+      //搜索的内容
+      searchText:''
+    }
+  },
+  methods:{
+    //点击搜索功能
+    search(){
+      const {searchText} = this
+      // const params = searchText ? `/${searchText}` : ''
+      // const location = `/search${params}`
+      // this.$router.push(location)
+      const location = searchText ? {
+        name:'search',
+        params:{searchText},
+        query:{name:'tph'}
+      } : {name:'search'}
+
+
+      this.$router.push(location)
+    }
+  }
 };
 </script>
 

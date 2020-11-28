@@ -6,8 +6,12 @@ import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
 
+
 // 安装插件
 Vue.use(VueRouter);
+
+
+
 
 export default new VueRouter({
   routes: [
@@ -18,14 +22,18 @@ export default new VueRouter({
     {
       path: "/login",
       component: Login,
+      meta:{isShow:true}
     },
     {
       path: "/register",
       component: Register,
+      meta: {isShow: true}
     },
     {
-      path: "/search",
+      path: "/search/:searchText?",
       component: Search,
+      name:'search',
+      
     },
   ],
 });
