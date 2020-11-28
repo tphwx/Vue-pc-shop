@@ -6,6 +6,21 @@ import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
 
+const push = VueRouter.prototype.push
+const replace = VueRouter.prototype.replace
+VueRouter.prototype.push = function(location,onComplete,onAbort){
+  if (onComplete && onAbort){
+    push.call(location, onComplete, onAbort)
+  }
+  push.call(this, location, onComplete,()=>{})
+}
+VueRouter.prototype.replace = function (location, onComplete, onAbort) {
+  if (onComplete && onAbort) {
+    replace.call(location, onComplete, onAbort)
+  }
+  push.replace(this, location, onComplete, () => {})
+}
+
 
 // 安装插件
 Vue.use(VueRouter);
