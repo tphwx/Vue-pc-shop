@@ -1,7 +1,11 @@
 <template>
   <!-- 商品分类导航 -->
   <div class="type-nav">
-    <div class="container">
+    <div
+      class="container"
+      @mouseenter="isNavShow = true "
+      @mouseleave="isNavShow = $route.path === '/' ? true : false"
+    >
       <h2 class="all">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -13,32 +17,56 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
+      <div class="sort" v-show="isNavShow">
+        <div class="all-sort-list2" @click="skip">
           <!-- 一级分类 -->
-          <div class="item bo" v-for="CategoryList in baseCategoryList" :key='CategoryList.categoryId'>
-            <h3>        
-              <a href="">{{CategoryList.categoryName}}</a>
+          <div
+            class="item bo"
+            v-for="categoryList in baseCategoryList"
+            :key="categoryList.categoryId"
+          >
+            <h3>
+              <a
+                :data-categoryId="categoryList.categoryId"
+                :data-categoryName="categoryList.categoryName"
+                :data-categoryType="1"
+                >{{ categoryList.categoryName }}
+              </a>
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
                 <!-- 二级分类 -->
-                <dl class="fore" v-for="TwoList in CategoryList.categoryChild" :key='TwoList.categoryId'>
+                <dl
+                  class="fore"
+                  v-for="twoList in categoryList.categoryChild"
+                  :key="twoList.categoryId"
+                >
                   <dt>
-                    <a href="">{{TwoList.categoryName}}</a>
+                    <a
+                      :data-categoryId="twoList.categoryId"
+                      :data-categoryName="twoList.categoryName"
+                      :data-categoryType="2"
+                      >{{ twoList.categoryName }}</a
+                    >
                   </dt>
                   <!-- 三级分类 -->
                   <dd>
-                    <em  v-for="commodity in TwoList.categoryChild" :key ='commodity.categoryId'>
-                      <a href="">{{commodity.categoryName}}</a>
+                    <em
+                      v-for="commodity in twoList.categoryChild"
+                      :key="commodity.categoryId"
+                    >
+                      <a
+                        :data-categoryId="commodity.categoryId"
+                        :data-categoryName="commodity.categoryName"
+                        :data-categoryType="3"
+                        >{{ commodity.categoryName }}</a
+                      >
                     </em>
-
                   </dd>
                 </dl>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -46,37 +74,44 @@
 </template>
 
 <script>
-
 // import {reqGetBaseCategoryList} from '@api/home'
-import {mapActions,mapState} from 'vuex'
+import { mapActions, mapState } from "vuex";
 export default {
-  name: 'TypeNav',
-  // data(){
-  //   return {
-  //     BaseCategoryList:[]
-  //   }
-  // },
-  // mounted(){
-  //   reqGetBaseCategoryList()
-  //   .then((value) => {
-  //     this.BaseCategoryList = value.splice(0,16)
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   })
-  // }
-  computed:{
+  name: "TypeNav",
+  data() {
+    return {
+      isNavShow: this.$route.path === "/",
+      // isNavShow:false
+    };
+  },
+  computed: {
     ...mapState({
-      baseCategoryList:(state) => state.home.baseCategoryList
-    })
+      baseCategoryList: (state) => state.home.baseCategoryList,
+    }),
   },
-  methods:{
-    ...mapActions(['getBaseCategoryList'])
+  methods: {
+    ...mapActions(["getBaseCategoryList"]),
+    skip(e) {
+      const { categoryid, categoryname, categorytype } = e.target.dataset;
+      if (!categoryid) {
+        return;
+      }
+      const locatios = {
+        name: "search",
+        query: {
+          categoryName: categoryname,
+          [`category${categorytype}Id`]: categoryid,
+        },
+      };
+      
+
+      this.$router.push(locatios);
+    },
   },
-  mounted(){
-    this.getBaseCategoryList()
-  }
-}
+  mounted() {
+    this.getBaseCategoryList();
+  },
+};
 </script>
 
 <style  lang="less" scoped>
