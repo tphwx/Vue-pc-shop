@@ -16,7 +16,7 @@
       <div class="sort">
         <div class="all-sort-list2">
           <!-- 一级分类 -->
-          <div class="item bo" v-for="CategoryList in BaseCategoryList" :key='CategoryList.categoryId'>
+          <div class="item bo" v-for="CategoryList in baseCategoryList" :key='CategoryList.categoryId'>
             <h3>        
               <a href="">{{CategoryList.categoryName}}</a>
             </h3>
@@ -47,22 +47,34 @@
 
 <script>
 
-import {reqGetBaseCategoryList} from '@api/home'
+// import {reqGetBaseCategoryList} from '@api/home'
+import {mapActions,mapState} from 'vuex'
 export default {
   name: 'TypeNav',
-  data(){
-    return {
-      BaseCategoryList:[]
-    }
+  // data(){
+  //   return {
+  //     BaseCategoryList:[]
+  //   }
+  // },
+  // mounted(){
+  //   reqGetBaseCategoryList()
+  //   .then((value) => {
+  //     this.BaseCategoryList = value.splice(0,16)
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   })
+  // }
+  computed:{
+    ...mapState({
+      baseCategoryList:(state) => state.home.baseCategoryList
+    })
+  },
+  methods:{
+    ...mapActions(['getBaseCategoryList'])
   },
   mounted(){
-    reqGetBaseCategoryList()
-    .then((value) => {
-      this.BaseCategoryList = value.splice(0,16)
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    this.getBaseCategoryList()
   }
 }
 </script>

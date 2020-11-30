@@ -25,7 +25,7 @@
   import ListContainer from './ListContainer/ListContainer'
   import Rank from './Rank/Rank'
   import TodayRecommend from './TodayRecommend/TodayRecommend'
-  import TypeNav from './TypeNav/index'
+  import TypeNav from '../../components/TypeNav'
   export default {
     name: 'Home',
     components: {
