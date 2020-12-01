@@ -110,8 +110,21 @@
 </template>
 
 <script>
+  import {mapActions,mapState} from 'vuex'
   export default {
     name: 'ListContainer',
+    computed:{
+      ...mapState({
+        mockBanner : (state) => state.home.mockBanner
+      })
+    },
+    methods:{
+      ...mapActions(['getMockBanner','getMockFloors'])
+    },
+    mounted(){
+      this.getMockBanner(),
+      this.getMockFloors()
+    }
   }
 </script>
 

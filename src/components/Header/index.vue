@@ -47,16 +47,21 @@ export default {
     //点击搜索功能
     search(){
       const {searchText} = this
+
+      const searchQuery = this.$route.query
+
+      
       // const params = searchText ? `/${searchText}` : ''
       // const location = `/search${params}`
       // this.$router.push(location)
-      const location = searchText ? {
+      const location = {
         name:'search',
-        params:{searchText},
-        query:{name:'tph'}
-      } : {name:'search'}
+        query:{...searchQuery}
+      }
 
-
+      if(searchText){
+        location.params = {searchText}
+      }
       this.$router.push(location)
     }
   }

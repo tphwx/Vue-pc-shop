@@ -3,10 +3,9 @@
   <div class="type-nav">
     <div
       class="container"
-      @mouseenter="isNavShow = true "
       @mouseleave="isNavShow = $route.path === '/' ? true : false"
     >
-      <h2 class="all">全部商品分类</h2>
+      <h2 class="all" @mouseenter="isNavShow = true ">全部商品分类</h2>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -17,7 +16,7 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort" v-show="isNavShow">
+      <div class="sort" v-show="isNavShow" @mouseleave="isNavShow = $route.path === '/' ? true : false">
         <div class="all-sort-list2" @click="skip">
           <!-- 一级分类 -->
           <div
@@ -103,12 +102,17 @@ export default {
           [`category${categorytype}Id`]: categoryid,
         },
       };
-      
+      if(this.$route.params){
+        locatios.params = this.$route.params
+      }
 
       this.$router.push(locatios);
     },
   },
   mounted() {
+    if(this.baseCategoryList.length) {
+      return
+    }
     this.getBaseCategoryList();
   },
 };
