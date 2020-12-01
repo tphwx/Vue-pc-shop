@@ -20,8 +20,6 @@ export default {
 
     async getMockBanner({commit}) {
 
-      console.log('actions');
-
       const mockBanner = await reqMockBanner()
       commit('MOCK_BANNER', mockBanner)
     },

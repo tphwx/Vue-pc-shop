@@ -24,8 +24,6 @@ instance.interceptors.response.use(
     NProgress.done();
 
     if (response.data.code === 200) {
-      console.log(response);
-
       return response.data.data
     }
     const { message } = response.data
