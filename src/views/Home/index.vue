@@ -10,9 +10,7 @@
     <!-- 猜你喜欢 -->
     <Like />
     <!--楼层-->
-    <Floor />
-    <!--楼层-->
-    <Floor />
+    <Floor v-for="(floor,index) in floors" :key='index' :floor='floor'/>
     <!--商标-->
     <Brand />
   </div>
@@ -26,6 +24,7 @@
   import Rank from './Rank/Rank'
   import TodayRecommend from './TodayRecommend/TodayRecommend'
   import TypeNav from '../../components/TypeNav'
+  import {mapActions,mapState} from 'vuex'
   export default {
     name: 'Home',
     components: {
@@ -36,6 +35,17 @@
       Rank,
       TodayRecommend,
       TypeNav
+    },
+    computed:{
+      ...mapState({
+        floors : (state) => state.home.mockFloors
+      })
+    },
+    methods:{
+      ...mapActions(['getMockFloors'])
+    },
+    mounted(){
+      this.getMockFloors()
     }
   }
 </script>

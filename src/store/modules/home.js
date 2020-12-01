@@ -19,13 +19,16 @@ export default {
     },
 
     async getMockBanner({commit}) {
+
+      console.log('actions');
+
       const mockBanner = await reqMockBanner()
       commit('MOCK_BANNER', mockBanner)
     },
 
     async getMockFloors({commit}) {
-      const mockfloors = await reqMockFloors()
-      commit('MOCK_FLOOR', mockfloors)
+      const mockFloors = await reqMockFloors()
+      commit('MOCK_FLOOR', mockFloors)
     }
   },
   mutations: {
@@ -34,10 +37,11 @@ export default {
     },
     MOCK_BANNER(state, mockBanner) {
       
+      console.log('mutations');
       state.mockBanner = mockBanner
     },
-    MOCK_FLOOR(state, mockfloors) {
-      state.mockfloors = mockfloors
+    MOCK_FLOOR(state, mockFloors) {
+      state.mockFloors = mockFloors
     }
   }
 }
