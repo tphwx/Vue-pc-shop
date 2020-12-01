@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="swiper-container" id="mySwiper">
+    <div class="swiper-container" id="mySwiper" ref="swiper">
           <div class="swiper-wrapper">
             <div
               class="swiper-slide"
@@ -42,10 +42,9 @@ export default {
       required: true,
     }
   },
-  watch:{
-    carouselList(){
-      this.$nextTick(() => {
-      new Swiper(".swiper-container", {
+  methods:{
+    carousel(){
+      new Swiper(this.$refs.swiper, {
         loop: true, // 循环模式选项
         // 如果需要分页器
         pagination: {
@@ -63,11 +62,19 @@ export default {
           disableOnInteraction:false
         },
       });
+    }
+  },
+  watch:{
+    carouselList(){
+      if (this.swiper) return;
+      this.$nextTick(() => {
+      this.carousel()
     });
     }
   },
   mounted(){
-    
+    if(!this.carouselList.length) return
+    this.carousel()
   }
 }
 </script>
