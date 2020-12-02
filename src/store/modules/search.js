@@ -1,5 +1,6 @@
 import {
-  reqGetProductList
+  reqGetProductList,
+  reqGetGoodsDetails
 } from '@api/search'
 export default {
   state: {
@@ -7,7 +8,8 @@ export default {
       trademarkList: [],
       attrsList: [],
       goodsList: [],
-    }
+    },
+    goodsDetails:[]
   },
   getters: {
     trademarkList(state){
@@ -21,16 +23,25 @@ export default {
     },
   },
   actions: {
-    async getProductList({commit,data = {}}){
+    async getProductList({commit},data = {}){
       const productList = await reqGetProductList(data)
       
       commit('GET_PRODUCT_LIST', productList)
       
+    },
+    //商品详情
+    async getGoodsDetails({commit} ,data ){
+    const goodsDetails = await reqGetGoodsDetails(data)
+    commit('GET_GOODS_DETAILS',goodsDetails)
     }
   },
   mutations: {
     GET_PRODUCT_LIST(state, productList) {
       state.productList = productList
+    },
+    //商品详情
+    GET_GOODS_DETAILS(state, goodsDetails){
+      state.goodsDetails = goodsDetails
     }
   }
 }

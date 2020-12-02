@@ -34,8 +34,6 @@ export default {
       state.baseCategoryList = baseCategoryList
     },
     MOCK_BANNER(state, mockBanner) {
-      
-      console.log('mutations');
       state.mockBanner = mockBanner
     },
     MOCK_FLOOR(state, mockFloors) {

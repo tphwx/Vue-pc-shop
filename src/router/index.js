@@ -5,6 +5,7 @@ import Home from "../views/Home";
 import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
+import Detail from "../views/Detail";
 
 const push = VueRouter.prototype.push
 const replace = VueRouter.prototype.replace
@@ -48,7 +49,11 @@ export default new VueRouter({
       path: "/search/:searchText?",
       component: Search,
       name:'search',
-      
     },
+    {
+      name: 'detail',
+      path: '/detail/:skuid?',
+      computed: Detail
+    }
   ],
 });
