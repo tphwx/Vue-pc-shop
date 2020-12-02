@@ -8,6 +8,8 @@ import Search from "../views/Search";
 import Detail from "../views/Detail";
 
 const push = VueRouter.prototype.push
+
+
 const replace = VueRouter.prototype.replace
 VueRouter.prototype.push = function(location,onComplete,onAbort){
   if (onComplete && onAbort){
@@ -15,11 +17,13 @@ VueRouter.prototype.push = function(location,onComplete,onAbort){
   }
   push.call(this, location, onComplete,()=>{})
 }
+
+
 VueRouter.prototype.replace = function (location, onComplete, onAbort) {
   if (onComplete && onAbort) {
     replace.call(location, onComplete, onAbort)
   }
-  push.replace(this, location, onComplete, () => {})
+  replace.call(this, location, onComplete, () => {})
 }
 
 

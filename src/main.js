@@ -9,6 +9,8 @@ import "./styles/reset.css";
 import './plugins/element.js'
 Vue.config.productionTip = false
 
+
+
 new Vue({
   beforeCreate() {
     // 初始化全局事件总线对象

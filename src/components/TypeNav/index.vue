@@ -105,8 +105,13 @@ export default {
       if(this.$route.params){
         locatios.params = this.$route.params
       }
-
-      this.$router.push(locatios);
+      
+      if(this.$route.path.indexOf('/search') > -1){
+      this.$router.replace(locatios);
+      }else{
+        this.$router.push(locatios);
+      }
+      
     },
   },
   mounted() {
