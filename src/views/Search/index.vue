@@ -11,10 +11,9 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-show="options.keyword" @click="delKeyword">{{options.keyword}}<i>×</i></li>
+            <li class="with-x" v-show="options.categoryName" @click="delCategory">{{options.categoryName}}<i>×</i></li>
+            
           </ul>
         </div>
 
@@ -370,7 +369,7 @@ export default {
         category3Id,
         keyword,
       };
-
+      this.options = options
       this.getProductList(options);
       },
       immediate:true
@@ -400,6 +399,30 @@ export default {
         name: "detail",
       });
     },
+    //删除属性
+    delKeyword(){
+      this.$bus.$emit('clearSearch')
+      //直接删除数据就行
+      this.options.keyword='';
+      //删除后 参数变了 所以要重新跳转,我们直接路由跳转就行,Wacch监视着路径一旦发生改变就会发请求
+      this.$router.push({
+        name:'search',
+        query:{
+          ...this.$route.query
+        }
+      })
+    },
+    delCategory(){
+      //直接删除数据就行
+      this.options.categoryName='';
+      //删除后 参数变了 所以要重新跳转,我们直接路由跳转就行,Wacch监视着路径一旦发生改变就会发请求
+      this.$router.push({
+        name:'search',
+        params:{
+          ...this.$route.params
+        }
+      })
+    }
   },
   mounted() {
     this.getGoodsDetails(123); //商品详情 展示没用
