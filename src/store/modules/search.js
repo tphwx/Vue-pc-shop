@@ -5,9 +5,6 @@ import {
 export default {
   state: {
     productList: {
-      trademarkList: [],
-      attrsList: [],
-      goodsList: [],
     },
     goodsDetails:[]
   },
@@ -20,6 +17,12 @@ export default {
     },
     goodsList(state) {
       return state.productList.goodsList
+    },
+    total(state) {
+      return state.productList.total
+    },
+    pageSize(state) {
+      return state.productList.pageSize
     },
   },
   actions: {

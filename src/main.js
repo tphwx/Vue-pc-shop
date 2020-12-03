@@ -5,7 +5,8 @@ import store from './store/index'
 import './mock/mockServer'
 //引入公共样式
 import "./styles/reset.css";
-
+//引入字体图标
+import './styles/iconfont.css'
 import './plugins/element.js'
 Vue.config.productionTip = false
 
