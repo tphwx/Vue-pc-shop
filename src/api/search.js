@@ -8,11 +8,3 @@ export const reqGetProductList = (data) => {
   })
 }
 
-// 获取商品详情数据
-
-export const reqGetGoodsDetails = data => {
-  return request({
-    method: 'GET',
-    url: `/item/${data}`,
-  })
-}

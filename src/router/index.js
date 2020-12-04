@@ -55,9 +55,9 @@ export default new VueRouter({
       name:'search',
     },
     {
+      path: '/detail/:skuId?',
       name: 'detail',
-      path: '/detail/:skuid?',
-      computed: Detail
+      component:Detail
     }
   ],
 });

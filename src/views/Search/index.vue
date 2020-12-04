@@ -107,7 +107,7 @@
               >
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a @click="details" target="_blank"
+                    <a @click="details(goodes.id)" target="_blank"
                       ><img :src="goodes.defaultImg"
                     /></a>
                   </div>
@@ -144,15 +144,25 @@
             </ul>
           </div>
           <div class="fr page">
-            <el-pagination
+            <!-- <el-pagination
               @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
               :page-size=pageSize
-              layout=" prev, pager, next,total"
+              layout=" prev, pager, next,total,sizes"
               :total="total"
               :pager-count = 7
               :background=true
+              :page-sizes="[5, 10, 20, 50]"
             >
-            </el-pagination>
+            </el-pagination> -->
+            <Pagination
+            @current-change="handleCurrentChange"
+            :current-page="options.pageNo"
+            :pager-count="7"
+            :page-size="5"
+            :total="total"  
+            />
+            <!--total:总数     page-size:每页显示数量   pager-count:页码个数  current-page:-->
           </div>
         </div>
       </div>
@@ -163,6 +173,7 @@
 <script>
 import SearchSelector from "./SearchSelector/SearchSelector";
 import TypeNav from "@comps/TypeNav";
+import Pagination  from '@comps/Pagination'
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -200,11 +211,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getProductList", "getGoodsDetails"]),
+    ...mapActions(["getProductList"]),
     
     //当前页码发生改变
     handleCurrentChange(pageNo){
+      console.log(pageNo);
       this.options.pageNo = pageNo
+      this.updateProductList()
+    },
+    //当每页条数发生改变
+    handleSizeChange(pageSize){
+      this.options.pageSize=pageSize
       this.updateProductList()
     },
     //发送请求封装
@@ -228,10 +245,12 @@ export default {
       this.getProductList(options);
     },
     //跳转到详情'
-    details() {
+    details(skuId) {
       this.$router.push({
         name: "detail",
+        params:{skuId}
       });
+
     },
     //删除属性
     delKeyword() {
@@ -306,12 +325,11 @@ export default {
       this.updateProductList();
     },
   },
-  mounted() {
-    this.getGoodsDetails(123); //商品详情 暂时没用
-  },
+  
   components: {
     SearchSelector,
     TypeNav,
+    Pagination
   },
 };
 </script>
@@ -576,7 +594,7 @@ export default {
         width: 733px;
         height: 66px;
         overflow: hidden;
-        float: right;
+        float: left;
 
         .sui-pagination {
           margin: 18px 0;
