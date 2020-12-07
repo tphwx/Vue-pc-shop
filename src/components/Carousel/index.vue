@@ -33,7 +33,7 @@
 import Swiper, { Pagination, Navigation, Autoplay } from "swiper";
 
 Swiper.use([Pagination, Navigation, Autoplay]);
-import "swiper/swiper-bundle.min.css";
+
 export default {
   name:'Carousel',
   props:{

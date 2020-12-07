@@ -7,27 +7,43 @@
     <section class="con">
       <!-- 导航路径区域 -->
       <div class="conPoin">
-        <span>{{ goodsDetails.categoryView.category1Name }}</span>
-        <span>{{ goodsDetails.categoryView.category2Name }}</span>
-        <span>{{ goodsDetails.categoryView.category3Name }}</span>
+        <span>{{ categoryView.category1Name }}</span>
+        <span>{{ categoryView.category2Name }}</span>
+        <span>{{ categoryView.category3Name }}</span>
       </div>
       <!-- 主要内容区域 -->
       <div class="mainCon">
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom />
+          <Zoom`
+            :bigImg="
+              skuInfo.skuImageList &&
+              skuInfo.skuImageList[imgIndex] &&
+              skuInfo.skuImageList &&
+              skuInfo.skuImageList[imgIndex].imgUrl
+            "
+            :img="
+              skuInfo.skuImageList &&
+              skuInfo.skuImageList[imgIndex] &&
+              skuInfo.skuImageList &&
+              skuInfo.skuImageList[imgIndex].imgUrl
+            "
+          />
           <!-- 小图列表 -->
-          <ImageList />
+          <ImageList
+            :skuImageList="skuInfo.skuImageList"
+            :updateCurrentImgIndex="updateCurrentImgIndex"
+          />
         </div>
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
             <h3 class="InfoName">
-              {{ goodsDetails.skuInfo.skuName }}
+              {{ skuInfo.skuName }}
             </h3>
             <p class="news">
-              推荐选择下方[移动优惠购],手机套餐齐搞定,不用换号,每月还有花费返
+              {{ skuInfo.skuDesc }}
             </p>
             <div class="priceArea">
               <div class="priceArea1">
@@ -36,7 +52,7 @@
                 </div>
                 <div class="price">
                   <i>¥</i>
-                  <em>{{ goodsDetails.price }}</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -76,14 +92,16 @@
             <div class="chooseArea">
               <div class="choosed"></div>
               <!-- 商品属性选择 -->
-              <dl
-                v-for="spuSale in goodsDetails.spuSaleAttrList"
-                :key="spuSale.baseSaleAttrId"
-              >
-                <dt class="title">{{ spuSale.saleAttrName }}</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
+              <dl v-for="spuSaleAttr in spuSaleAttrList" :key="spuSaleAttr.id">
+                <dt class="title">{{ spuSaleAttr.saleAttrName }}</dt>
+                <dd
+                  changepirce="0"
+                  class="active"
+                  v-for="spuSaleAttrValue in spuSaleAttr.spuSaleAttrValueList"
+                  :key="spuSaleAttrValue.id"
+                >
+                  {{ spuSaleAttrValue.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
@@ -335,7 +353,7 @@
 import TypeNav from "@comps/TypeNav";
 import ImageList from "./ImageList/ImageList";
 import Zoom from "./Zoom/Zoom";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Detail",
   components: {
@@ -344,15 +362,21 @@ export default {
     TypeNav,
   },
   methods: {
-    ...mapActions(["getGoodsDetails"]),
+    ...mapActions(["getProductDetail"]),
+    updateCurrentImgIndex(index) {
+      this.imgIndex = index;
+    },
+  },
+  data() {
+    return {
+      imgIndex: 0,
+    };
   },
   async mounted() {
-    await this.getGoodsDetails(this.$route.params.skuId);
+    await this.getProductDetail(this.$route.params.skuId);
   },
   computed: {
-    ...mapState({
-      goodsDetails: (state) => state.detail.goodsDetails,
-    }),
+    ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
 };
 </script>

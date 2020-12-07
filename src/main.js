@@ -8,6 +8,7 @@ import "./styles/reset.css";
 //引入字体图标
 import './styles/iconfont.css'
 import './plugins/element.js'
+import "swiper/swiper-bundle.min.css";
 Vue.config.productionTip = false
 
 
@@ -21,4 +22,3 @@ new Vue({
   router,
   store
 }).$mount('#app')
-

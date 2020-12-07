@@ -60,4 +60,8 @@ export default new VueRouter({
       component:Detail
     }
   ],
+  scrollBehavior() {
+    return {x:0,y:0}
+  }
+  
 });
