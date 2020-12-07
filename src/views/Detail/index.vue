@@ -16,7 +16,7 @@
         <!-- 左侧放大镜区域 -->
         <div class="previewWrap">
           <!--放大镜效果-->
-          <Zoom`
+          <Zoom
             :bigImg="
               skuInfo.skuImageList &&
               skuInfo.skuImageList[imgIndex] &&
