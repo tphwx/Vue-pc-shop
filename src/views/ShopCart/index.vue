@@ -13,7 +13,7 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="cart in cartList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" />
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked" @change='cartChecked(cart.skuId,cart.isChecked)' />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -77,7 +77,7 @@
         <div class="chosed">已选择 <span>0</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
           <a class="sum-btn" href="###" target="_blank">结算</a>
@@ -92,13 +92,33 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "ShopCart",
+  // data () {
+  //   return {
+  //     cartCheckbox:false
+  //   }
+  // },
   computed: {
     ...mapState({
       cartList: (state) => state.shopcart.cartList,
     }),
+    //计算总价格
+    totalPrice(){
+      return this.cartList.filter((cart) => cart.isChecked === 1).reduce((p,c) => {
+        
+        return p + c.skuPrice*c.skuNum
+      },0)
+    }
   },
   methods: {
-    ...mapActions(["getCartList", "updateCartCount"]),
+    ...mapActions(["getCartList", "updateCartCount",'updateCartCheck']),
+
+    cartChecked(skuId,isChecked){
+      console.log(isChecked);
+      isChecked = isChecked === 1 ? 0 : 1
+      console.log(isChecked);
+      
+      this.updateCartCheck({skuId,isChecked})
+    },
 
     formatSkuNum(e) {
       let skuNum = +e.target.value.replace(/\D+/g, "");
@@ -111,7 +131,7 @@ export default {
       }
       e.target.value = skuNum;
     },
-     update(skuId, skuNum, e) {
+    update(skuId, skuNum, e) {
       // 当前商品数量是10 e.target.value 6 --> -4  6 - 10
       // 当前商品数量是3 e.target.value 6 --> 3
       // console.log(skuId, skuNum, e.target.value);

@@ -23,35 +23,42 @@
       </div>
       <div class="content">
         <label>验证码:</label>
-        
-        <ValidationProvider rules= "code" v-slot="{ errors }">
-          <input type="text" placeholder="请输入验证码" v-model="user.code"/>
-        <img
-          ref="code"
-          src="http://182.92.128.115/api/user/passport/code"
-          alt="code"
-        />
-        <span class="error-msg">{{errors[0]}}</span>
+
+        <ValidationProvider rules="code" v-slot="{ errors }">
+          <input type="text" placeholder="请输入验证码" v-model="user.code" />
+          <img
+            ref="code"
+            src="http://182.92.128.115/api/user/passport/code"
+            alt="code"
+          />
+          <span class="error-msg">{{ errors[0] }}</span>
         </ValidationProvider>
-        
       </div>
       <div class="content">
         <label>登录密码:</label>
-        <input type="text" placeholder="请输入你的登录密码" v-model="user.password"/>
+        <input
+          type="password"
+          placeholder="请输入你的登录密码"
+          v-model="user.password"
+        />
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="content">
         <label>确认密码:</label>
-        <input type="text" placeholder="请输入确认密码" v-model="user.rePassword"/>
+        <input
+          type="password"
+          placeholder="请输入确认密码"
+          v-model="user.rePassword"
+        />
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input name="m1" type="checkbox" v-model="user.isAgree" />
         <span>同意协议并注册《尚品汇用户协议》</span>
         <!-- <span class="error-msg">错误提示信息</span> -->
       </div>
       <div class="btn">
-        <button>完成注册</button>
+        <button @click="submit">完成注册</button>
       </div>
     </div>
 
@@ -81,11 +88,11 @@ extend("required", {
   ...required,
   message: "请输入手机号码",
 });
-extend('length', {
-  validate: value => {
+extend("length", {
+  validate: (value) => {
     return value.length === 11;
   },
-  message:'请输入11位的'
+  message: "请输入11位的",
 });
 extend("phone", {
   validate(value) {
@@ -98,28 +105,62 @@ extend("phone", {
 
 extend("code", {
   validate(value) {
-    return /\d{4}/.test(value)
+    return /\d{4}/.test(value);
   },
   message: "请输入4位数字验证码",
 });
-
 
 export default {
   name: "Register",
   components: {
     ValidationProvider,
   },
-  data () {
+  data() {
     return {
-      user:{
-        phone:'',  //手机号码
-        code:'',   //验证码
-        password:'', //密码
-        rePassword:'',//确认密码
-        isAgree:false //协议是否选中
+      user: {
+        phone: "", //手机号码
+        code: "", //验证码
+        password: "", //密码
+        rePassword: "", //确认密码
+        isAgree: false, //协议是否选中
+      },
+    };
+  },
+  methods: {
+    //注册
+    async submit() {
+      try {
+        //手机表单数据
+        const { phone, code, password, rePassword, isAgree } = this.user;
+        //进行正则校验
+        if (!isAgree) {
+          this.$message.error("请同意用户协议~");
+          return;
+        }
+
+        if (password !== rePassword) {
+          this.$message.error("两次确认密码一致!");
+          return;
+        }
+        console.log(phone, password, code);
+        //发送请求注册
+        await this.$store.dispatch("register", { phone, password, code });
+        this.$router.push("/login");
+      } catch (e) {
+         // 清空密码
+        this.user.password = "";
+        this.user.rePassword = "";
+        // 刷新验证码
+        this.refresh();
+        console.log(e);
       }
-    }
-  }
+    },
+    // 刷新验证码
+    refresh() {
+      this.$refs.code.src = "http://182.92.128.115/api/user/passport/code";
+      // e.target.src = "http://182.92.128.115/api/user/passport/code";
+    },
+  },
 };
 </script>
 

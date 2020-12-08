@@ -111,7 +111,7 @@
                 <a href="javascript:" class="mins">-</a>
               </div>
               <div class="add" @click="addCart">
-                <a href="javascript:">加入购物车</a>
+                <a href="##">加入购物车</a>
               </div>
             </div>
           </div>
@@ -375,6 +375,9 @@ export default {
           skuNum: this.skuNum,
         });
         this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`);
+  
+        sessionStorage.setItem("cart", JSON.stringify(this.skuInfo))
+
       } catch (e) {
         console.log(e);
       }
