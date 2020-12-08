@@ -1,11 +1,17 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
-import {Message} from 'element-ui'
+import {
+  Message
+} from 'element-ui'
 import "nprogress/nprogress.css";
+
+import getUserTempId from './getUserTempId'
+
+const userTempId = getUserTempId()
 const instance = axios.create({
   //    `/是当前服务器地址
   baseURL: '/api', //公共的基础路径
-  headers: {},
+
 })
 
 //设置请求拦截器
@@ -14,8 +20,10 @@ instance.interceptors.request.use(
 
   (config) => {
     NProgress.start();
+    config.headers.userTempId = userTempId
     return config
   }
+
 );
 
 instance.interceptors.response.use(
@@ -26,7 +34,9 @@ instance.interceptors.response.use(
     if (response.data.code === 200) {
       return response.data.data
     }
-    const { message } = response.data
+    const {
+      message
+    } = response.data
 
     Message.error(message)
     return Promise.reject(message)

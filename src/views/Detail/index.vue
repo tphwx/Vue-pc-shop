@@ -110,7 +110,7 @@
                 <a href="javascript:" class="plus">+</a>
                 <a href="javascript:" class="mins">-</a>
               </div>
-              <div class="add">
+              <div class="add" @click="addCart">
                 <a href="javascript:">加入购物车</a>
               </div>
             </div>
@@ -362,14 +362,28 @@ export default {
     TypeNav,
   },
   methods: {
-    ...mapActions(["getProductDetail"]),
+    ...mapActions(["getProductDetail", "updateCartCount"]),
+    //选中图片index
     updateCurrentImgIndex(index) {
       this.imgIndex = index;
+    },
+    //加入购物车
+    async addCart() {
+      try {
+        await this.updateCartCount({
+          skuId: this.skuInfo.id,
+          skuNum: this.skuNum,
+        });
+        this.$router.push(`/addcartsuccess?skuNum=${this.skuNum}`);
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   data() {
     return {
-      imgIndex: 0,
+      imgIndex: 0, //当前选中图片下标
+      skuNum: 1, //商品数量
     };
   },
   async mounted() {

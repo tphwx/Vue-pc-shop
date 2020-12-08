@@ -6,6 +6,8 @@ import Login from "../views/Login";
 import Register from "../views/Register";
 import Search from "../views/Search";
 import Detail from "../views/Detail";
+import AddCartSuccess from '../views/AddCartSuccess'
+import ShopCart from '../views/ShopCart'
 
 const push = VueRouter.prototype.push
 
@@ -58,7 +60,17 @@ export default new VueRouter({
       path: '/detail/:skuId?',
       name: 'detail',
       component:Detail
-    }
+    },
+    {
+      path: '/addcartsuccess',
+      name: 'addcartsuccess',
+      component: AddCartSuccess
+    },
+    {
+      path: '/shopcart',
+      name: 'shopcart',
+      component: ShopCart
+    },
   ],
   scrollBehavior() {
     return {x:0,y:0}
