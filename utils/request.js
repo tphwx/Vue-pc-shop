@@ -45,8 +45,10 @@ instance.interceptors.response.use(
     const {
       message
     } = response.data
-
-    Message.error(message)
+    if (message !== '支付中'){
+      Message.error(message)
+    }
+    
     return Promise.reject(message)
   },
   (error) => {

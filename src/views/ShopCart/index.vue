@@ -56,7 +56,7 @@
             <span class="sum">{{ cart.skuPrice * cart.skuNum }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript::" class="sindelet" @click="delCart(cart.skuId)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -74,13 +74,13 @@
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择 <span>0</span>件商品</div>
+        <div class="chosed">已选择 <span>{{total}}</span>件商品</div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
           <i class="summoney">{{totalPrice}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade">结算</router-link>
         </div>
       </div>
     </div>
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState,} from "vuex";
 
 export default {
   name: "ShopCart",
@@ -101,17 +101,30 @@ export default {
     ...mapState({
       cartList: (state) => state.shopcart.cartList,
     }),
-    //计算总价格
+    // ...mapGetters(['totals']),
+    // 商品总数
+    total() {
+      return this.cartList
+        .filter((cart) => cart.isChecked === 1)
+        .reduce((p, c) => p + c.skuNum, 0);
+    },
+    // 计算总价格
     totalPrice(){
       return this.cartList.filter((cart) => cart.isChecked === 1).reduce((p,c) => {
-        
         return p + c.skuPrice*c.skuNum
       },0)
     }
   },
   methods: {
-    ...mapActions(["getCartList", "updateCartCount",'updateCartCheck']),
-
+    ...mapActions(["getCartList", "updateCartCount",'updateCartCheck','getReqDelCart']),
+    //删除购物车数据
+    async delCart(skuId){
+      if(window.confirm('您确定要删除此商品吗')){
+        await this.getReqDelCart(skuId)
+        await this.getCartList()
+      }
+      return   
+    },
     cartChecked(skuId,isChecked){
       console.log(isChecked);
       isChecked = isChecked === 1 ? 0 : 1
